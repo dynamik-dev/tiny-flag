@@ -1,29 +1,42 @@
-# A lightweight simple feature flag system for Laravel
+<div style="text-align: center;">
+<h1>TinyFlag ⛳️</h1>
+<h2>A dead- simple feature flagging package for Laravel.</h2>
+<img style="margin-bottom: 20px;" src="docs/tinyflag.png" alt="TinyFlag" width="400">
+</div>
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/dynamik-dev/tiny-flag.svg?style=flat-square)](https://packagist.org/packages/dynamik-dev/tiny-flag)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/dynamik-dev/tiny-flag/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/dynamik-dev/tiny-flag/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/dynamik-dev/tiny-flag/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/dynamik-dev/tiny-flag/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/dynamik-dev/tiny-flag.svg?style=flat-square)](https://packagist.org/packages/dynamik-dev/tiny-flag)
+TinyFlag is a simple feature flagging package for Laravel. It allows you to easily manage feature flags in your application.
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+You do not need to manually declare flags, simply write a check in your code and the flag will be created for you with the given default value.
 
-## Support us
+```php
+if(flag('my-feature-flag', true)) {
+    // do something
+}
+```
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/tiny-flag.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/tiny-flag)
+This will create a feature flag with the name `my-feature-flag` and the default value `true`. You can now enable or disable the flag in the database.
 
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
+```php
+use DynamikDev\TinyFlag\Facades\TinyFlag;
 
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+TinyFlag::enable('my-feature-flag');
+TinyFlag::disable('my-feature-flag');
+```
+
+Or, using the artisan command:
+
+```bash
+php artisan flags:enable my-feature-flag
+php artisan flags:disable my-feature-flag
+```
 
 ## Installation
 
-You can install the package via composer:
-
 ```bash
-composer require dynamik-dev/tiny-flag
+composer require dynamik-dev/tinyflag
 ```
 
-You can publish and run the migrations with:
+After installing, you can publish and run the migrations with:
 
 ```bash
 php artisan vendor:publish --tag="tiny-flag-migrations"
@@ -36,49 +49,25 @@ You can publish the config file with:
 php artisan vendor:publish --tag="tiny-flag-config"
 ```
 
-This is the contents of the published config file:
+## Default Flags
+
+To add default flags, you can add them to the `flags` array in the config file.
 
 ```php
-return [
-];
+'flags' => [
+    'my-feature-flag' => true,
+]
 ```
 
-Optionally, you can publish the views using
+This will be the default state of the flag. If the flag is updated in the database, it will override the default value. However, if you reset all flags, the default value will be used again. See more in the [Configuration](docs/configuration.md) section.
 
-```bash
-php artisan vendor:publish --tag="tiny-flag-views"
-```
+## Why not use Laravel Pennant?
 
-## Usage
+Pennant is a great package, but for 90% of my usecases, I just needed a simple boolean check that I could easily manage in the database.
 
-```php
-$tinyFlag = new DynamikDev\TinyFlag();
-echo $tinyFlag->echoPhrase('Hello, DynamikDev!');
-```
+Use Pennant if you need more complex feature flagging, such as per-user flags, or flagging based on a user's role or other attributes.
 
-## Testing
+### Documentation
 
-```bash
-composer test
-```
-
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
-
-## Credits
-
-- [Chris Arter](https://github.com/)
-- [All Contributors](../../contributors)
-
-## License
-
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+- [Configuration](docs/configuration.md)
+- [Artisan Commands](docs/artisan-commands.md)
