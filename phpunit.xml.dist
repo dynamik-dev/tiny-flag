@@ -15,8 +15,11 @@
     cacheDirectory=".phpunit.cache"
     backupStaticProperties="false"
 >
+    <php>
+        <env name="DB_CONNECTION" value="testing"/>
+    </php>
     <testsuites>
-        <testsuite name="VendorName Test Suite">
+        <testsuite name="DynamikDev Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
